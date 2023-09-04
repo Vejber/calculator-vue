@@ -1,5 +1,7 @@
 # calculator-vue
 
+##Создание калькулятора через компонент Vue
+
 ## Project setup
 ```
 npm install
