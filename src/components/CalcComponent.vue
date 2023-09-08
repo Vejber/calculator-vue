@@ -39,11 +39,24 @@
             <div>
                 <template v-if="result > 100">Positive number greater than 100</template>
             </div>
+
+            <div>
+                Fib Number for the first input: {{ fib1 }}, <br>
+                Fib Number for the second input: {{ fib2 }},
+
+            </div>
+            <div>
+                <h3>Operations log</h3>
+                <div v-for="log in logs" :key="log.id">
+                    {{ log }}
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
     export default {
         name: 'CalcComponent',
 
@@ -57,6 +70,7 @@
                 result: 0,
                 operations:['+', '-', '*', '/'],
                 error: '',
+                logs: {},
             };
         },
 
@@ -92,6 +106,7 @@
                 const {operand1, operand2} = this;
                 if (operand2 == 0) {
                     this.error = "can't divide by 0";
+                    this.result = Infinity;
                 } else {
                     this.result = operand1 / operand2;
                 }
@@ -113,11 +128,32 @@
                         this.divide();
                         break;
                 
-                    default:
-                        break;
+                    // default:
+                    //     break;
                 }
+
+                // this.logs[Date.now()] = `${this.operand1}${operation}${this.
+                //     operand2}=${this.result}`
+
+                const key = Date.now();
+                const value = `${this.operand1}${operation}${this.
+                    operand2}=${this.result}`;
+                Vue.set(this.logs, key, value);
+            },
+
+            fib(n){
+                return n <= 1 ? n : this.fib(n-1) + this.fib(n-2);
             }
         },
+
+        computed: {
+            fib1(){
+                return this.fib(this.operand1);
+            },
+            fib2(){
+                return this.fib(this.operand2);
+            }
+        }
         
     }
 </script>
